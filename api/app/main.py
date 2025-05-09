@@ -8,8 +8,8 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
-from api.app.api.v1 import routers
-from core.config import settings
+from app.api.v1 import routers
+from app.core.config import settings
 
 
 def create_app() -> FastAPI:
@@ -19,6 +19,8 @@ def create_app() -> FastAPI:
     )
 
     fastapi_app.include_router(routers.api_router, prefix=settings.api_v1_prefix)
+
+    return fastapi_app
 
 
 def set_tracing(fastapi_app: FastAPI):
