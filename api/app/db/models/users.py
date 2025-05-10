@@ -1,3 +1,4 @@
+from email.policy import default
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
@@ -14,4 +15,5 @@ class TelegramUser(Base, UUIDMixin, TimestampedMixin):
     telegram_id: Mapped[int] = mapped_column(unique=True, index=True)
     username: Mapped[Optional[str]] = mapped_column(unique=True, index=True)
     fullname: Mapped[str]
+    quiz_answer: Mapped[Optional[int]] = mapped_column(default=None)
 
