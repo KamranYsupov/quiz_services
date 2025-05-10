@@ -32,6 +32,7 @@ class RepositoryBase(Generic[ModelType,]):
         db_obj = self.model(**insert_data)
 
         self._session.add(db_obj)
+        await self._session.commit()
         await self._session.refresh(db_obj)
 
         return db_obj
@@ -53,6 +54,7 @@ class RepositoryBase(Generic[ModelType,]):
             values(**insert_data)
         )
         await self._session.execute(statement)
+        await self._session.commit()
 
         return await self._session.get(self.model, obj_id)
 

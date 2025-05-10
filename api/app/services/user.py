@@ -13,7 +13,7 @@ class TelegramUserService(CRUDBaseService):
     ):
         self._repository_telegram_user = repository_telegram_user
         super().__init__(
-            repository=self.repository_telegram_user,
+            repository=self._repository_telegram_user,
             unique_fields=unique_fields,
         )
 

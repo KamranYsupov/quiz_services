@@ -1,10 +1,12 @@
 import copy
-from typing import Dict, Sequence
+from typing import Dict, Sequence, TypeVar, Optional, Type, Union
 
 from sqlalchemy import func, MetaData
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, declared_attr
 
 from app.core.config import settings
+
+SchemaType = TypeVar('SchemaType')
 
 
 class Base(DeclarativeBase):
@@ -23,7 +25,7 @@ class Base(DeclarativeBase):
             schema_class,
             model_dump: bool = False,
             exclude_fields: Sequence[str] = [],
-    ) -> Dict:
+    ) -> Optional[Union[Dict, SchemaType]]:
         serialized_data = {}
         schema_fields = schema_class.model_fields.keys()
         data = copy.deepcopy(self.__dict__)

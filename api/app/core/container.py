@@ -26,12 +26,9 @@ class Container(containers.DeclarativeContainer):
     # region services
     telegram_user_service = providers.Singleton(
         TelegramUserService,
-        repository_user=repository_telegram_user,
+        repository_telegram_user=repository_telegram_user,
         unique_fields=('telegram_id', 'username',)
     )
     # endregion
 
 
-container = Container()
-container.init_resources()
-container.wire(modules=settings.container_wiring_modules)

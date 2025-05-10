@@ -43,8 +43,19 @@ class CRUDBaseService:
             insert_data=insert_data,
         )
 
-    async def list(self, *args, limit: int, **kwargs) -> list[ModelType]:
-        return await self._repository.list(*args, limit=limit, **kwargs)
+    async def list(
+            self,
+            *args,
+            skip: Optional[int] = None,
+            limit: Optional[int] = None,
+            **kwargs
+    ) -> list[ModelType]:
+        return await self._repository.list(
+            *args,
+            skip=skip,
+            limit=limit,
+            **kwargs
+        )
 
     async def delete(self, obj_id: UUID) -> None:
         return await self._repository.delete(obj_id=obj_id)
@@ -67,7 +78,7 @@ class CRUDBaseService:
 
         existing_obj = await self._repository.exists(*conditions)
         if existing_obj:
-            formatted_fields_string = ' or '.join(self.unique_fields).capitalize()
+            formatted_fields_string = ' or '.join(self.unique_fields)
             exception_detail = f'{formatted_fields_string} is already taken'
 
             raise HTTPException(

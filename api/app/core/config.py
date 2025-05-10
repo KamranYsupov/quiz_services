@@ -39,6 +39,12 @@ class Settings(BaseSettings):
 
     # endregion
 
+    container_wiring_modules: list = [
+        'app.api.v1.endpoints.users',
+        'app.api.v1.endpoints.quiz',
+        'app.db.transaction'
+    ]
+
     @property
     def db_url(self) -> str:
         return self.sqlite_default_url
