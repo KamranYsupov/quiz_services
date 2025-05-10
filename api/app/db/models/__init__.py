@@ -7,4 +7,4 @@ __all__ = (
 
 from .base import Base
 from .mixins import UUIDMixin, TimestampedMixin
-from .users import TelegramUser
+from .user import TelegramUser

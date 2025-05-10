@@ -1,9 +1,6 @@
-from email.policy import default
-from typing import TYPE_CHECKING, Optional
-from uuid import UUID
+from typing import Optional
 
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import Base
 from .mixins import UUIDMixin, TimestampedMixin
