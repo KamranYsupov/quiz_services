@@ -1,5 +1,5 @@
 [project]
-name = "quiz_service"
+name = "quiz_service_api"
 version = "0.1.0"
 description = ""
 authors = [
