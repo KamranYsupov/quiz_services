@@ -11,6 +11,6 @@ class TelegramUser(Base, UUIDMixin, TimestampedMixin):
 
     telegram_id: Mapped[int] = mapped_column(unique=True, index=True)
     username: Mapped[Optional[str]] = mapped_column(unique=True, index=True)
-    fullname: Mapped[str]
+    full_name: Mapped[str]
     quiz_answer: Mapped[Optional[int]] = mapped_column(default=None)
 

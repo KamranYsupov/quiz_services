@@ -4,17 +4,17 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
 
-class TelegramBaseSchema(BaseModel):
+class TelegramUserBaseSchema(BaseModel):
     telegram_id: int
     username: Optional[str]
-    fullname: str
+    full_name: str
 
 
-class TelegramUserSchema(TelegramBaseSchema):
+class TelegramUserSchema(TelegramUserBaseSchema):
     id: uuid.UUID
     quiz_answer: Optional[int] = None
 
 
-class TelegramCreateUserSchema(TelegramBaseSchema):
+class TelegramUserCreateSchema(TelegramUserBaseSchema):
     pass
 
