@@ -10,7 +10,7 @@ SERVICE_NAME = os.getenv('SERVICE_NAME', 'bot')
 JAEGER_HOST = os.getenv('JAEGER_HOST', 'jaeger')
 JAEGER_PORT = os.getenv('JAEGER_PORT', 6831)
 
-API_URL = os.getenv('API_URL', 'http://localhost:8001/api/')
+API_URL = os.getenv('API_URL', 'http://nginx:80/api/')
 API_V1_URL = os.getenv('API_V1_URL', f'{API_URL}v1/')
 
 CONTAINER_WIRING_MODULES = [

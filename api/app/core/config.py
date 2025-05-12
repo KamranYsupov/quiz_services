@@ -14,7 +14,7 @@ class Settings(BaseSettings):
         default='fastapi-service',
     )
     jaeger_host: str = Field(title='Jaeger хост', default='jaeger')
-    jaeger_port: int = Field(title='Jaeger порт', default=16686)
+    jaeger_port: int = Field(title='Jaeger порт', default=6831)
 
     # endregion
 

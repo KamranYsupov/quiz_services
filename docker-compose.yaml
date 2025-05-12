@@ -1,0 +1,127 @@
+version: '3.3'
+
+x-function: &base_python
+  environment: &env-vars
+    POETRY_HOME: /poetry
+  depends_on:
+    - db
+    - redis
+  networks:
+    - internal
+
+x-celery: &base_celery
+  <<: *base_python
+  build:
+    context: bot/
+  entrypoint: celery
+  links:
+    - redis
+  restart: always
+
+x-worker: &base_worker
+  <<: *base_celery
+  command: >
+    -A core.celery worker -l info
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.48
+    container_name: quiz_jaeger
+    networks:
+      - internal
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"  # UI
+      - "14268:14268"  # Collector HTTP
+      - "14250:14250"  # Collector gRPC (OTLP)
+      - "9411:9411"    # Zipkin
+    restart: unless-stopped
+    depends_on:
+      - api
+      - bot
+
+  db:
+    container_name: quiz_db
+    image: postgres:14.6-alpine
+    volumes:
+      - pg_data:/var/lib/postgresql/data/pgdata:rw
+    env_file:
+      - ./.env
+    networks:
+      - internal
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  nginx:
+    build: api/nginx/
+    container_name: quiz_nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - internal
+
+  api:
+    <<: *base_python
+    build:
+      context: api/
+    container_name: quiz_api
+    volumes:
+      - api-poetry-volume:/poetry:delegated
+    env_file:
+      - ./.env
+
+  bot:
+    <<: *base_python
+    build:
+      context: bot/
+    container_name: quiz_bot
+    command: python reloader.py
+    volumes:
+      - bot-poetry-volume:/poetry:delegated
+    depends_on:
+      - api
+    env_file:
+      - ./.env
+
+  redis:
+    image: redis:7.0.11-alpine
+    hostname: redis
+    container_name: quiz_redis
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      - internal
+    env_file:
+      - ./.env
+    restart: always
+
+
+  worker1:
+    <<: *base_worker
+    hostname: worker1
+    container_name: quiz_worker1
+
+volumes:
+  pg_data:
+  redis_data:
+  api-poetry-volume:
+  bot-poetry-volume:
+
+
+networks:
+  internal:
