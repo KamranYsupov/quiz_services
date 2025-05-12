@@ -32,7 +32,7 @@ docker compose up --build -d
 
 
 <h4>
-3. Отправьте боту комманду /start:
+3. Отправьте боту комманду /start
 </h4>
 <br>
 
