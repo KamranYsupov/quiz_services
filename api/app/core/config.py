@@ -13,8 +13,8 @@ class Settings(BaseSettings):
         alias='API_SERVICE_NAME',
         default='fastapi-service',
     )
-    jaeger_host: str = Field(title='Jaeger хост', default='localhost')
-    jaeger_post: int = Field(title='Jaeger порт', default=6831)
+    jaeger_host: str = Field(title='Jaeger хост', default='jaeger')
+    jaeger_port: int = Field(title='Jaeger порт', default=16686)
 
     # endregion
 
@@ -50,7 +50,7 @@ class Settings(BaseSettings):
         return self.sqlite_default_url
 
     class Config:
-        env_file = '.env'
+        env_file = '.env.bot'
 
 
 settings = Settings()

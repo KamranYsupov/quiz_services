@@ -52,7 +52,7 @@ class QuizAPIV1Service:
         obj_data = obj.model_dump()
 
         async with aiohttp.ClientSession() as session:
-            async with session.post(url=url, json=obj_data) as response:
+            async with session.patch(url=url, json=obj_data) as response:
                 return await get_response_data_or_raise_exception(
                     response=response,
                 )
