@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+TELEGRAM_API_URL = 'https://api.telegram.org'
 SERVICE_NAME = os.getenv('SERVICE_NAME', 'bot')
 
 JAEGER_HOST = os.getenv('JAEGER_HOST', 'jaeger')
@@ -15,7 +16,8 @@ API_V1_URL = os.getenv('API_V1_URL', f'{API_URL}v1/')
 
 CONTAINER_WIRING_MODULES = [
     'handlers.start',
-    'handlers.quiz'
+    'handlers.quiz',
+    'tasks.quiz',
 ]
 
 REDIS_HOST = os.getenv('REDIS_HOST', 'redis')

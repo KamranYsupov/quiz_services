@@ -8,6 +8,8 @@ x-function: &base_python
     - redis
   networks:
     - internal
+  env_file:
+    - ./.env
 
 x-celery: &base_celery
   <<: *base_python
@@ -21,7 +23,7 @@ x-celery: &base_celery
 x-worker: &base_worker
   <<: *base_celery
   command: >
-    -A core.celery worker -l info
+    -A core.celery.app worker -l info
 
 services:
   jaeger:
@@ -80,8 +82,6 @@ services:
     container_name: quiz_api
     volumes:
       - api-poetry-volume:/poetry:delegated
-    env_file:
-      - ./.env
 
   bot:
     <<: *base_python
@@ -93,8 +93,6 @@ services:
       - bot-poetry-volume:/poetry:delegated
     depends_on:
       - api
-    env_file:
-      - ./.env
 
   redis:
     image: redis:7.0.11-alpine

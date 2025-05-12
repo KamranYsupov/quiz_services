@@ -10,4 +10,9 @@ app = Celery(
     backend=config.CELERY_BACKEND_URL,
     broker=config.CELERY_BROKER_URL,
 )
-app.autodiscover_tasks()
+app.autodiscover_tasks(['tasks'])
+
+from tasks.quiz import (
+    is_number_prime_task
+)
+

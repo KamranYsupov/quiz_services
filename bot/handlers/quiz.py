@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import loguru
 from aiogram import Router, types, F
 from aiogram.filters import CommandStart, StateFilter
@@ -43,9 +45,14 @@ async def answer_quiz_handler(
         await quiz_api_v1_service.answer_quiz(
             obj=answer_schema
         )
-        await is_number_prime_task(
-            answer=answer,
-            chat_id=message.from_user.id,
+
+        now = datetime.now()
+        is_number_prime_task.apply_async(
+            eta=now + timedelta(minutes=1),
+            kwargs=dict(
+                answer=answer,
+                chat_id=message.from_user.id,
+            )
         )
 
         await message.answer('Подвожу результаты. . .')
