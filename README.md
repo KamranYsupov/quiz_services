@@ -38,6 +38,6 @@ docker compose up --build -d
 
 <b>Готово!</b><br>
 <b>Документация API:</b> <em>http://127.0.0.1/docs</em><br>
-<b>Трейсинг запросов(Jeager UI):</b> <em>http://127.0.0.1:16686/search</em><br>
+<b>Трейсинг запросов(Jaуger UI):</b> <em>http://127.0.0.1:16686/search</em><br>
 
 </h4>
