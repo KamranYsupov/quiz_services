@@ -37,7 +37,7 @@ def set_tracing(fastapi_app: FastAPI):
     )
     jaeger_exporter = JaegerExporter(
         agent_host_name=settings.jaeger_host,
-        agent_port=settings.jaeger_post,
+        agent_port=settings.jaeger_port,
     )
     span_processor = BatchSpanProcessor(jaeger_exporter)
     trace.get_tracer_provider().add_span_processor(span_processor)
