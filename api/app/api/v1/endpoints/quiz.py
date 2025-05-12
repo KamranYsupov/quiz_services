@@ -38,6 +38,5 @@ async def answer_quiz(
     telegram_user.quiz_answer = answer.quiz_answer
     session.add(telegram_user)
     await session.commit()
-    print(telegram_user.quiz_answer)
 
     return {'status': 'ok'}
