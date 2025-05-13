@@ -1,3 +1,5 @@
+from http.client import HTTPException
+
 import loguru
 from aiogram import Router, types
 from aiogram.filters import CommandStart
@@ -23,14 +25,17 @@ async def start_command_handler(
             Container.quiz_api_v1_service
         ],
 ):
-    print('start')
     tracer = trace.get_tracer(__name__)
 
     with tracer.start_as_current_span('start_command') as span:
-        print('trace')
-        user_data = await quiz_api_v1_service.get_user(
-            user_id=message.from_user.id
-        )
+        user_data = {}
+
+        try:
+            user_data = await quiz_api_v1_service.get_user(
+                user_id=message.from_user.id
+            )
+        except HTTPException:
+            pass
 
         if not user_data:
             from_user_data = message.from_user.model_dump()

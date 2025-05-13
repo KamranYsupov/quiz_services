@@ -1,4 +1,4 @@
-from pydantic import Field
+from pydantic import Field, PostgresDsn
 from pydantic_settings import BaseSettings
 
 
@@ -36,6 +36,7 @@ class Settings(BaseSettings):
     sqlite_default_url: str = Field(
         default='sqlite+aiosqlite:///./db.sqlite3'
     )
+    use_sqlite: bool = Field(default=False)
 
     # endregion
 
@@ -47,10 +48,20 @@ class Settings(BaseSettings):
 
     @property
     def db_url(self) -> str:
-        return self.sqlite_default_url
+        if self.use_sqlite:
+            return self.sqlite_default_url
+
+        return PostgresDsn.build(
+            scheme='postgresql+asyncpg',
+            username=self.db_user,
+            password=self.db_password,
+            host=self.db_host,
+            port=self.db_port,
+            path=self.db_name
+        ).unicode_string()
 
     class Config:
-        env_file = '.env.bot'
+        env_file = '.env'
 
 
 settings = Settings()
